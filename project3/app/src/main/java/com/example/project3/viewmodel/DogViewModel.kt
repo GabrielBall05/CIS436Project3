@@ -1,10 +1,20 @@
 package com.example.project3.viewmodel
 
+import android.app.Application
+import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.Volley
+import com.example.project3.data.Constants
 import com.example.project3.data.DogBreed
+import org.json.JSONArray
 
-class DogViewModel : ViewModel() {
+class DogViewModel(application: Application) : AndroidViewModel(application) {
     //List of all the breeds as LiveData
     //This will be filled in with all the information from the initial API response
     //It will be observed by the Spinner (svBreeds) in BreedSelectorFragment
@@ -23,14 +33,54 @@ class DogViewModel : ViewModel() {
     }
 
     //To get all dog breeds upon opening app
+
     fun fetchBreeds() {
+        val baseUrl = Constants.BASE_URL
+        val apiKey = Constants.API_KEY
+        val url = "$baseUrl?api_key=$apiKey"
+        Log.d("DogApi", url)
+
+        // 1. Create the RequestQueue
+        val queue = Volley.newRequestQueue(getApplication())
+
+        // 2. Create the JsonArrayRequest
+        val request = object : JsonArrayRequest(
+            Request.Method.GET,
+            url,
+            null,
+            Response.Listener { response ->
+                // Success: Log the number of breeds found
+                Log.i("DogApi", "Successfully retrieved ${response.length()} breeds.")
+
+                for(i in 0 until response.length()) {
+                    val curBreed = response.getJSONObject(i)
+                    val name = curBreed.getString("name")
+                    val lifeSpan = curBreed.getString("life_span")
+                    val temperament = curBreed.getString("temperament")
+
+                    // Detailed log for each breed
+                    Log.i("DogApi", "Breed[$i]: $name | Temperament: $temperament | Life Span: $lifeSpan")
+                }
+            },
+            Response.ErrorListener  { error ->
+                // Handle error (e.g., Timeout, No Internet, 403 Unauthorized)
+                Log.i("DogApi", "Error: ${error.message}")
+            }
+        ) {} // Close object - braces are required
+
+        // 3. Add the request to the RequestQueue
+        queue.add(request)
+    } // Close fetchDogBreeds
+
+
+    //fun fetchBreeds() {
         //TODO: Use Volley to get a list of all dog breeds
         //I made a Constants.kt where there is the base url and the api key. Just do Constants.BASE_URL or .API_KEY
         //to access them. Just follow along the example he gave us for making the request and parsing the response.
         //Make sure to look at the documentation and make some requests (outside the app) to see what it gives you first.
         //TODO: Parse JSON response into objects of DogBreed class and add to a temporary MutableListOf<DogBreed>()
         //TODO: Then once the whole response is parsed, do breedsList.value = tempList
-    }
+    //}
 
     //To update the selection when the spinner changes
     fun onBreedSelected(breed: DogBreed) {
