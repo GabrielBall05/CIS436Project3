@@ -1,9 +1,11 @@
 package com.example.project3.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
@@ -12,7 +14,7 @@ import com.example.project3.data.Constants
 import com.example.project3.data.DogBreed
 import org.json.JSONArray
 
-class DogViewModel : ViewModel() {
+class DogViewModel(application: Application) : AndroidViewModel(application) {
     //List of all the breeds as LiveData
     //This will be filled in with all the information from the initial API response
     //It will be observed by the Spinner (svBreeds) in BreedSelectorFragment
@@ -27,18 +29,19 @@ class DogViewModel : ViewModel() {
 
     init {
         //Call fetchBreeds() right here as soon as the app has loaded to retrieve initial data from the dog api
-        fetchBreeds(context: Context)
+        fetchBreeds()
     }
 
     //To get all dog breeds upon opening app
 
-    fun fetchBreeds(context: Context) {
+    fun fetchBreeds() {
         val baseUrl = Constants.BASE_URL
         val apiKey = Constants.API_KEY
         val url = "$baseUrl?api_key=$apiKey"
+        Log.d("DogApi", url)
 
         // 1. Create the RequestQueue
-        val queue = Volley.newRequestQueue(context)
+        val queue = Volley.newRequestQueue(getApplication())
 
         // 2. Create the JsonArrayRequest
         val request = object : JsonArrayRequest(
@@ -77,8 +80,6 @@ class DogViewModel : ViewModel() {
         //Make sure to look at the documentation and make some requests (outside the app) to see what it gives you first.
         //TODO: Parse JSON response into objects of DogBreed class and add to a temporary MutableListOf<DogBreed>()
         //TODO: Then once the whole response is parsed, do breedsList.value = tempList
-
-        //val api = Constants.BASE_URL
     //}
 
     //To update the selection when the spinner changes
