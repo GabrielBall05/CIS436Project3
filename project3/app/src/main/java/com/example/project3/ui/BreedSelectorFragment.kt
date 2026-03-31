@@ -2,44 +2,61 @@ package com.example.project3.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.project3.R
+import com.example.project3.databinding.FragmentBreedSelectorBinding
 import com.example.project3.viewmodel.DogViewModel
-import kotlin.getValue
 
 class BreedSelectorFragment : Fragment() {
-
-    //Gets the same DogViewModel instance owned by MainActivity
-    //TODO: Have the Spinner observe the viewModel's breedsList LiveData
+    // -Francisco: Shared ViewModel
     private val viewModel: DogViewModel by activityViewModels()
-
-    //TODO: Binding variables and that stuff
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    // - Francisco: binding allows access to UI elements from XML
+    private var _binding: FragmentBreedSelectorBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_breed_selector, container, false)
+    ): View {
+        _binding = FragmentBreedSelectorBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //This is what observing something from the viewModel looks like:
+        
+        Log.d("BreedSelector", "ViewModel Hash: ${viewModel.hashCode()}")
+        // -Francisco: Observe the breedsList LiveData
         viewModel.breedsList.observe(viewLifecycleOwner) { breeds ->
-            //TODO: Code to populate spinner with the breed options. Binding will need to be set up to access the spinner
+            Log.d("BreedSelector", "Observed ${breeds.size} breeds")
+            val breedNames = breeds.map { it.name }
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                breedNames
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spBreeds.adapter = adapter
+        }
+        // Francisco: Handle user selecting a breed from spinner
+        binding.spBreeds.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val breeds = viewModel.breedsList.value
+                if (!breeds.isNullOrEmpty() && position < breeds.size) {
+                    viewModel.onBreedSelected(breeds[position])
+                }
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

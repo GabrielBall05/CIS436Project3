@@ -8,23 +8,20 @@
     tools:context=".MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/breedSelectorFragment"
-        android:name="com.example.project3.ui.BreedSelectorFragment"
+        android:id="@+id/selectorContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_breed_selector" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/breedDetailsFragment"
-        android:name="com.example.project3.ui.BreedDetailsFragment"
+        android:id="@+id/detailsContainer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/breedSelectorFragment"
-        tools:layout="@layout/fragment_breed_details" />
+        app:layout_constraintTop_toBottomOf="@+id/selectorContainer" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
