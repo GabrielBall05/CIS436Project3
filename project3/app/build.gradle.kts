@@ -4,9 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.project3"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.project3"
@@ -46,6 +44,9 @@ dependencies {
     implementation(libs.volley)
     implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
+
+    implementation("io.coil-kt:coil:2.7.0") // -Francisco: Loads dog images from URL
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
