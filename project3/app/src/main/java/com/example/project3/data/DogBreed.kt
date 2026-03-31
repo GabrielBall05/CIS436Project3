@@ -5,5 +5,6 @@ data class DogBreed(
     val name: String,
     val temperament: String? = "Unknown",
     val origin: String? = "Unknown",
+    val lifeSpan: String? = "Unknown",
     val imageUrl: String? = null
 )

@@ -34,6 +34,8 @@ class BreedSelectorFragment : Fragment() {
         // -Francisco: Observe the breedsList LiveData
         viewModel.breedsList.observe(viewLifecycleOwner) { breeds ->
             Log.d("BreedSelector", "Observed ${breeds.size} breeds")
+            binding.tvTitle.text = "Select a Breed"
+
             val breedNames = breeds.map { it.name }
             val adapter = ArrayAdapter(
                 requireContext(),

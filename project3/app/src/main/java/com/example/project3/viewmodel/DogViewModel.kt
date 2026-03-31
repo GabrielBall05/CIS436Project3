@@ -17,6 +17,11 @@ class DogViewModel(application: Application) : AndroidViewModel(application) {
 
     //Selected dog breed as LiveData
     val selectedBreed = MutableLiveData<DogBreed>()
+
+    //For retrying fetching initial breeds if there was an error with Volley
+    private var retries = 0;
+    private val maxRetries = 3;
+
     // -Francisco: automatically fetch data when app starts
     init {
         Log.d("DogViewModel", "ViewModel Initialized")
@@ -48,6 +53,7 @@ class DogViewModel(application: Application) : AndroidViewModel(application) {
                         name = curBreed.optString("name", "Unknown"),
                         temperament = curBreed.optString("temperament", "Unknown"),
                         origin = curBreed.optString("origin", "Unknown"),
+                        lifeSpan = curBreed.optString("life_span", "Unknown"),
                         imageUrl = imageUrl
                     ))
                 }
@@ -62,6 +68,13 @@ class DogViewModel(application: Application) : AndroidViewModel(application) {
             },
             Response.ErrorListener { error ->
                 Log.e("DogViewModel", "Volley Error: ${error.message}")
+                //Try again
+                val isRecoverableError = error is com.android.volley.TimeoutError || error is com.android.volley.NoConnectionError
+                if (isRecoverableError && retries < maxRetries) {
+                    Log.e("DogViewModel", "Retrying breeds fetch")
+                    fetchBreeds()
+                    retries++
+                }
             }
         ) {}
         queue.add(request)

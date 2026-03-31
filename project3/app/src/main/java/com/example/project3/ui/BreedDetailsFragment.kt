@@ -32,6 +32,9 @@ class BreedDetailsFragment : Fragment() {
 
         // Force a test update
         binding.tvName.text = "Waiting for data..."
+        binding.tvTemperament.text = "Waiting for data..."
+        binding.tvOrigin.text = "Waiting for data..."
+        binding.tvLifeSpan.text = "Waiting for data..."
 
         viewModel.selectedBreed.observe(viewLifecycleOwner) { breed ->
             Log.d("BreedDetails", "Updating UI for breed: ${breed.name}")
@@ -39,6 +42,7 @@ class BreedDetailsFragment : Fragment() {
             binding.tvName.text = breed.name
             binding.tvTemperament.text = breed.temperament
             binding.tvOrigin.text = breed.origin
+            binding.tvLifeSpan.text = "${breed.lifeSpan} years"
 
             if (!breed.imageUrl.isNullOrEmpty()) {
                 binding.imgDogImage.load(breed.imageUrl) {
