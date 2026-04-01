@@ -44,6 +44,9 @@ class BreedSelectorFragment : Fragment() {
             )
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.spBreeds.adapter = adapter
+
+            //Set selection for orientation changes
+            binding.spBreeds.setSelection(breeds.indexOfFirst { it.name == viewModel.selectedBreed.value?.name })
         }
         // Francisco: Handle user selecting a breed from spinner
         binding.spBreeds.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
