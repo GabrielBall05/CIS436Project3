@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // -Francisco: manually add fragments if they haven't been added yet
+        //Manually add fragments if they haven't been added yet
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.selectorContainer, BreedSelectorFragment())
