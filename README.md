@@ -1,7 +1,7 @@
 # CIS 436 Project 3 - Dog Breed App
 
 ## Team Members
-- Gabe
+- Gabriel Ball
 - Francisco Hernandez
 - Giovanni Claro
 ---
@@ -16,6 +16,7 @@ The app allows users to:
   - Name
   - Temperament
   - Origin
+  - Life Span
   - Image
 
 The app follows Android Jetpack principles using Fragments and a shared ViewModel.
@@ -53,17 +54,21 @@ The bottom fragment displays:
 - Dog name
 - Temperament
 - Origin
+- Life Span
 - Image loaded from URL
 
 ---
 
 ## Team Contributions
 
-### Gabe
+### Gabriel Ball
 - Set up project structure
 - Created fragments and layouts
 - Implemented initial ViewModel structure
 - Designed UI layout using ConstraintLayout and ScrollView
+- Other small things like keeping selection on orientation change
+  and retrying initial fetch if it fails.
+- DogBreed data model
 
 ### Francisco Hernandez
 - Implemented API integration using Volley
@@ -73,9 +78,11 @@ The bottom fragment displays:
 - Implemented breed selection handling
 - Implemented BreedDetailsFragment UI updates
 
-## Giovanni
+## Giovanni Claro
 - Implemented initial API integration for Volley
 - Developed test plan
+- Executed test plan
+
 ---
 
 ## Biggest Challenge
