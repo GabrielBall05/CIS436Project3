@@ -3,7 +3,7 @@
 ## Team Members
 - Gabe
 - Francisco Hernandez
-- Gio
+- Giovanni Claro
 ---
 
 ## Project Overview
@@ -72,6 +72,10 @@ The bottom fragment displays:
 - Implemented Spinner population logic
 - Implemented breed selection handling
 - Implemented BreedDetailsFragment UI updates
+
+## Giovanni
+- Implemented initial API integration for Volley
+- Developed test plan
 ---
 
 ## Biggest Challenge
